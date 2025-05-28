@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-image: linear-gradient(to right, #048eb8, #24f3f0);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+    }
+    .link-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #4b6cb7;
+      background-image: linear-gradient(to right, #182848, #4b6cb7);
+      color: rgb(0, 251, 235);
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+    }
+    .link-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+    .link-button:active {
+      transform: scale(0.98);
+    }
+    .center {
+      text-align: center;
+      margin-top: 30px;
+    }
+    #profiles {
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    #profiles input {
+      padding: 8px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #444;
+      width: 180px;
+    }
+    #profiles button {
+      margin-left: 10px;
+    }
+    #profile-list {
+      margin-top: 15px;
+    }
+    #profile-list button {
+      margin: 5px 5px 0 0;
+      background-color: #2a4d69;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Memorize your Bible Bee Scriptures (Junior)</h1>
+    <h2>Below are links to resources I have created to aid studying!</h2>
+
+    <div id="profiles">
+      <input type="text" id="profileName" placeholder="Enter new profile name" />
+      <button id="addProfile" class="link-button">Add Profile</button>
+      <div id="profile-list"></div>
+    </div>
+
+    <div class="center" id="resource-buttons">
+      <a href="bible_bee_checklist.html" class="link-button">Open Verse Checklist</a>
+      <a href="verses.html" class="link-button">Verses</a>
+      <a href="https://www.blueletterbible.org" class="link-button">Blue Letter Bible</a>
+      <a href="https://biblebee.org" class="link-button">Bible Bee Website</a>
+    </div>
+  </header>
+
+  <script>
+    // Profile management 
+    const profileListDiv = document.getElementById('profile-list');
+    const profileInput = document.getElementById('profileName');
+    const addProfileBtn = document.getElementById('addProfile');
+
+    function getProfiles() {
+      return JSON.parse(localStorage.getItem('profiles') || '[]');
+    }
+
+    function saveProfiles(profiles) {
+      localStorage.setItem('profiles', JSON.stringify(profiles));
+    }
+
+    function setCurrentProfile(name) {
+      localStorage.setItem('currentProfile', name);
+    }
+
+    function getCurrentProfile() {
+      return localStorage.getItem('currentProfile');
+    }
+
+    function renderProfiles() {
+      const profiles = getProfiles();
+      profileListDiv.innerHTML = '';
+      if (profiles.length === 0) {
+        profileListDiv.textContent = 'No profiles yet. Create one!';
+        return;
+      }
+      profiles.forEach(profile => {
+        const btn = document.createElement('button');
+        btn.textContent = profile;
+        btn.className = 'link-button';
+        if (profile === getCurrentProfile()) {
+          btn.style.backgroundColor = '#1abc9c'; // highlight selected profile
+          btn.style.color = '#000';
+          btn.disabled = true;
+        }
+        btn.addEventListener('click', () => {
+          setCurrentProfile(profile);
+          renderProfiles();
+        });
+        profileListDiv.appendChild(btn);
+      });
+    }
+
+    addProfileBtn.addEventListener('click', () => {
+      const name = profileInput.value.trim();
+      if (!name) {
+        alert('Please enter a profile name!');
+        return;
+      }
+      let profiles = getProfiles();
+      if (profiles.includes(name)) {
+        alert('Profile already exists!');
+        return;
+      }
+      profiles.push(name);
+      saveProfiles(profiles);
+      setCurrentProfile(name);
+      profileInput.value = '';
+      renderProfiles();
+    });
+
+    renderProfiles();
+
+    document.getElementById('openChecklist').addEventListener('click', () => {
+      const current = getCurrentProfile();
+      if (!current) {
+        alert('Please create/select a profile first!');
+        return;
+      }
+      window.location.href = 'bible_bee_checklist.html';
+    });
+  </script>
+</body>
+</html>

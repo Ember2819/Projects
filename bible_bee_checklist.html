@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bible Bee Checklist</title>
+  <style>
+    h2 {
+      text-align: center;
+    }
+    body {
+      background-image: linear-gradient(to right, #048eb8, #24f3f0);
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    @keyframes typewriter {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+    .typewriter {
+      display: inline-block;
+      overflow: hidden;
+      border-right: 2px solid black;
+      white-space: nowrap;
+      animation: 
+        typewriter 3s steps(30, end) 1s 1 normal both,
+        blink 0.75s step-end infinite;
+      font-size: 2em;
+      font-family: monospace;
+    }
+    .verse-link {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #4b6cb7;
+      background-image: linear-gradient(to right, #182848, #4b6cb7);
+      color: rgb(0, 251, 235);
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      margin-top: 30px;
+      text-align: center;
+    }
+    .verse-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+    .verse-link:active {
+      transform: scale(0.98);
+    }
+    .center {
+      text-align: center;
+      margin-top: 50px;
+    }
+    .verse {
+      text-align: left; 
+      padding: 5px 15px;
+      display: flex;      
+      align-items: center;    
+      gap: 10px;              
+      font-size: 16px;         
+      max-width: 300px;        
+      margin: 0 auto 8px;      
+    }
+    .verse label {
+      flex-grow: 1;  
+      cursor: pointer;   
+    }
+  </style>
+</head>
+<body>
+  <h2><span class="typewriter">Bible Bee Memory Checklist</span></h2>
+
+  <div class="verse">
+    <label><input type="checkbox" data-verse="genesis1-1-5"> Genesis 1:1–5</label>
+  </div>
+
+  <div class="verse">
+    <label><input type="checkbox" data-verse="colossians1-15-16"> Colossians 1:15–16</label>
+  </div>
+
+  <div class="verse">
+    <label><input type="checkbox" data-verse="genesis1-26-28"> Genesis 1:26–28</label>
+  </div>
+
+  <div class="verse">
+    <label><input type="checkbox" data-verse="isaiah40-26-28"> Isaiah 40:26–28</label>
+  </div>
+
+  <div class="verse">
+    <label><input type="checkbox" data-verse="genesis2-1-3"> Genesis 2:1–3</label>
+  </div>
+
+  <div class="verse">
+    <label><input type="checkbox" data-verse="genesis2-23-24"> Genesis 2:23–24</label>
+  </div>
+
+  <div class="verse">
+    <label><input type="checkbox" data-verse="genesis3-14-15"> Genesis 3:14–15</label>
+  </div>
+
+  <div class="verse">
+    <label><input type="checkbox" data-verse="genesis4-7-8"> Genesis 4:7–8</label>
+  </div>
+
+  <div class="verse">
+    <label><input type="checkbox" data-verse="genesis5-1-3"> Genesis 5:1–3</label>
+  </div>
+
+  <div class="verse">
+    <label><input type="checkbox" data-verse="genesis17-1-4"> Genesis 17:1–4</label>
+  </div>
+
+  <div class="verse">
+    <label><input type="checkbox" data-verse="exodus31-12-14"> Exodus 31:12–14</label>
+  </div>
+
+  <div class="verse">
+    <label><input type="checkbox" data-verse="deuteronomy6-13-15"> Deuteronomy 6:13–15</label>
+  </div>
+
+  <div class="verse">
+    <label><input type="checkbox" data-verse="psalm68-19-20"> Psalm 68:19–20</label>
+  </div>
+
+  <div class="verse">
+    <label><input type="checkbox" data-verse="psalm90-1-4"> Psalm 90:1–4</label>
+  </div>
+
+  <div class="verse">
+    <label><input type="checkbox" data-verse="jeremiah23-5-6"> Jeremiah 23:5–6</label>
+  </div>
+
+  <div class="center">
+    <a href="index.html" class="verse-link">Home (Switch Profile)</a>
+  </div>
+
+  <script>
+    // Get current profile from localStorage (set by your home page)
+    const currentProfile = localStorage.getItem('currentProfile') || 'profile1';
+
+    // Load saved checkbox states for this profile
+    function loadChecks() {
+      const saved = localStorage.getItem('checks_' + currentProfile);
+      const checks = saved ? JSON.parse(saved) : {};
+      document.querySelectorAll('input[type="checkbox"]').forEach(box => {
+        box.checked = !!checks[box.dataset.verse];
+      });
+    }
+
+    // Save checkbox states for this profile
+    function saveChecks() {
+      const checks = {};
+      document.querySelectorAll('input[type="checkbox"]').forEach(box => {
+        checks[box.dataset.verse] = box.checked;
+      });
+      localStorage.setItem('checks_' + currentProfile, JSON.stringify(checks));
+    }
+
+    // Attach event listeners to save on change
+    document.querySelectorAll('input[type="checkbox"]').forEach(box => {
+      box.addEventListener('change', saveChecks);
+    });
+
+    // Initial load of saved states
+    loadChecks();
+  </script>
+</body>
+</html>
